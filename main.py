@@ -15,12 +15,13 @@ def csv_writer(data: Iterable, path: str) -> NoReturn:
 
 
 def sequences_from_fastq(filename: str) -> List[str]:
-    # regexp = re.compile(r"@([A-Za-z0-9_.: -/]+)\n([A-Za-z\n.~]+)\n\+\1{0,1}\n[!-~\n]+")
-    regexp = re.compile(r"@[A-Za-z0-9_.: /\-]+\n([A-Za-z\n.~]+)\n\+")
     result = []
     with open(filename, 'r') as file:
-        for seq in re.findall(regexp, file.read()):
-            result.append("".join(seq.split()))
+        i = 1
+        for line in file:
+            if i % 4 == 2:
+                result.append(line.strip())
+            i += 1
     return result
 
 
